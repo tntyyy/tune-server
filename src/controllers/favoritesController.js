@@ -1,4 +1,4 @@
-const {FavoritesTracks, Tracks} = require("../models/models");
+const {FavoritesTracks} = require("../models/models");
 const ApiError = require("../error/apiError");
 
 class FavoritesController {
