@@ -10,7 +10,20 @@ class TracksController {
     }
 
     async getAllTracks(req, res) {
+        let {releaseId, limit, page} = req.query;
+        limit = limit || 5;
+        page = page || 1;
+        let tracks;
+        let offset = page * limit - limit;
 
+        if (!releaseId) {
+            tracks = await Tracks.findAndCountAll({limit, offset});
+        }
+        if (releaseId) {
+            tracks = await Tracks.findAll({where: {releaseId}});
+        }
+
+        return res.json(tracks);
     }
 
     async getOneTrack(req, res) {

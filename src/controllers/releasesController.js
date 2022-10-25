@@ -23,12 +23,34 @@ class ReleasesController {
         return res.json(allReleases);
     }
 
-    async getOneRelease(req, res) {
-
+    async getOneRelease(req, res, next) {
+        try {
+            const {id} = req.params;
+            if (id) {
+                const release = await Releases.findOne({
+                    where: {id: id}
+                });
+                return res.json(release);
+            }
+        } catch (e) {
+            next(ApiError.badRequest(e.message));
+        }
     }
 
-    async deleteRelease(req, res) {
-
+    async deleteRelease(req, res, next) {
+        try {
+            const {id} = req.params;
+            let deleted;
+            if (id) {
+                deleted = await Releases.destroy({where: {id}});
+            }
+            if (deleted) {
+                return res.json(true);
+            }
+            return res.json(false);
+        } catch (e) {
+            next(ApiError.badRequest(e.message));
+        }
     }
 }
 
