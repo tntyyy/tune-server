@@ -2,6 +2,7 @@ const Router = require("express");
 const router = new Router();
 const usersController = require("../controllers/usersController");
 const {check, body} = require("express-validator");
+const authMiddleware = require("../middlewares/AuthMiddleware");
 
 router.post("/registration", [
     check("username", "The username cannot be empty").notEmpty(),
@@ -13,6 +14,6 @@ router.post("/registration", [
     check("role", "The role cannot be empty").notEmpty()
 ], usersController.registration);
 router.post("/login", usersController.login);
-router.get("/auth", usersController.auth);
+router.get("/auth", authMiddleware, usersController.auth);
 
 module.exports = router;
