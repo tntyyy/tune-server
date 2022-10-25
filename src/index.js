@@ -14,6 +14,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.static(path.resolve(__dirname, "static/images")));
+app.use(express.static(path.resolve(__dirname, "static/audio")));
 app.use(fileUpload({}));
 app.use("/api", router);
 

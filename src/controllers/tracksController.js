@@ -1,12 +1,18 @@
 const {Tracks} = require("../models/models");
 const ApiError = require("../error/apiError");
+const uuid = require("uuid");
+const path = require("path");
+
 
 class TracksController {
     async createTrack(req, res) {
-        const {name, length, listens, releaseId, audio} = req.body;
-        const track = await Tracks.create({name, length, listens, releaseId, audio});
+        const {name, length, listens, releaseId} = req.body;
+        const {audio} = await req.files;
+        const extension = audio.name.split('.').pop();
+        let fileName = uuid.v4() + `.${extension}`;
+        await audio.mv(path.resolve(__dirname, "..", "static", "audio", fileName));
+        const track = await Tracks.create({name, length, listens, releaseId, audio: fileName});
         return res.json(track);
-
     }
 
     async getAllTracks(req, res) {
