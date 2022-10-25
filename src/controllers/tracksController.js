@@ -26,12 +26,34 @@ class TracksController {
         return res.json(tracks);
     }
 
-    async getOneTrack(req, res) {
-
+    async getOneTrack(req, res, next) {
+        try {
+            const {id} = req.params;
+            if (id) {
+                const track = await Tracks.findOne({
+                    where: {id: id}
+                });
+                return res.json(track);
+            }
+        } catch (e) {
+            next(ApiError.badRequest(e.message));
+        }
     }
 
-    async deleteTrack(req, res) {
-
+    async deleteTrack(req, res, next) {
+        try {
+            const {id} = req.params;
+            let deleted;
+            if (id) {
+                deleted = await Tracks.destroy({where: {id}});
+            }
+            if (deleted) {
+                return res.json(true);
+            }
+            return res.json(false);
+        } catch (e) {
+            next(ApiError.badRequest(e.message));
+        }
     }
 }
 
