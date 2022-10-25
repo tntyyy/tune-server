@@ -1,5 +1,11 @@
+const {Tracks} = require("../models/models");
+const ApiError = require("../error/apiError");
+
 class TracksController {
     async createTrack(req, res) {
+        const {name, length, listens, releaseId, audio} = req.body;
+        const track = await Tracks.create({name, length, listens, releaseId, audio});
+        return res.json(track);
 
     }
 
