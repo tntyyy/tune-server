@@ -6,7 +6,7 @@ module.exports = function (req, res, next) {
     }
 
     try {
-        const token = req.headers.authorization.split(" ")[1];
+        const token = req.headers.get("Cookie");
 
         if (!token) {
             return res.status(401).json({message: "The user is not logged in"});
@@ -16,6 +16,6 @@ module.exports = function (req, res, next) {
         req.user = decoded
         next();
     } catch (e) {
-        res.status(401).json({message: "The user is not logged in"});
+        res.status(401).json({message: "Something went wrong..."});
     }
 }

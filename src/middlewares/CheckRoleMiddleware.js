@@ -7,7 +7,7 @@ module.exports = function (role) {
         }
 
         try {
-            const token = req.headers.authorization.split(" ")[1];
+            const token = req.headers.cookie.substr(13);
 
             if (!token) {
                 return res.status(401).json({message: "The user is not logged in"});
@@ -20,7 +20,7 @@ module.exports = function (role) {
             req.user = decoded
             next();
         } catch (e) {
-            res.status(401).json({message: "The user is not logged in"});
+            res.status(401).json({message: "Something went wrong..."});
         }
     }
 }

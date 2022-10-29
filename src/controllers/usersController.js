@@ -34,6 +34,7 @@ class UsersController {
             const hashPassword = bcrypt.hashSync(password, 5);
             const user = await Users.create({username, email, password: hashPassword, role});
             const token = generateJwt(user.id, user.username, user.email, user.role);
+            res.cookie("access-token", token, {maxAge: 24 * 60 * 60 * 1000, httpOnly: true});
             return res.json({token});
         } catch (e) {
             next(ApiError.badRequest(e.message));
@@ -54,6 +55,7 @@ class UsersController {
         }
 
         const token = generateJwt(user.id, user.username, user.email, user.role);
+        
         return res.json({token});
     }
 
