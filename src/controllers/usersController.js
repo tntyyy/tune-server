@@ -55,12 +55,11 @@ class UsersController {
         }
 
         const token = generateJwt(user.id, user.username, user.email, user.role);
-        
+        res.cookie("access-token", token, {maxAge: 24 * 60 * 60 * 1000, httpOnly: true});
         return res.json({token});
     }
 
     async auth (req, res, next) {
-        const token = generateJwt(req.user.id, req.user.username, req.user.email, req.user.role);
         return res.json(req.user);
     }
 }
