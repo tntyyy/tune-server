@@ -13,7 +13,10 @@ router.post("/registration", [
     check("password", "The password must contain more than 6 characters, but less than 20.").isLength({min: 6, max: 20}),
     check("role", "The role cannot be empty").notEmpty()
 ], usersController.registration);
-router.post("/login", usersController.login);
+router.post("/login", [
+  check("email", "The username cannot be empty").notEmpty(),
+  check("password", "The password cannot be empty").notEmpty(),
+], usersController.login);
 router.get("/auth", authMiddleware, usersController.auth);
 
 module.exports = router;
